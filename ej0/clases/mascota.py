@@ -9,4 +9,4 @@ class mascota (object):
         self.tipo=str(t)
 
     def quiensoy (self):
-        return "soy"+self.nombre+"un"+self.tipo
+        return "soy "+self.nombre+" un "+self.tipo
