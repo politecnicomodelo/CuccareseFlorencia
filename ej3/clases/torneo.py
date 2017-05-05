@@ -7,4 +7,7 @@ class torneo (object):
             return false
         self.listadeequipos.append(equipo)
         return true
+
+
+
     #def organizarfixture(self):
