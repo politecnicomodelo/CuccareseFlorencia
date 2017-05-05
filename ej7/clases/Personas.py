@@ -2,10 +2,8 @@ class Personas(object):
     nombre=""
     apellido=""
 
-    def setnombre(self,n):
+    def __init__(self,n,a):
         self.nombre=n
-
-    def setapellido(self,a):
         self.apellido=a
 
     def getdesc(self):
