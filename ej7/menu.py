@@ -8,6 +8,16 @@ platos=[]
 pedidos=[]
 personas=[]
 
-def agregaralumno(nombre,apellido):
-    alumno=Alumnos(nombre,apellido)
+def agregaralumno(nombre,apellido,division):
+    alumno=Alumnos()
+    alumno.setdivision(division)
+    alumno.setnombreapellido(nombre,apellido)
     personas.append(alumno)
+
+def agregarprofesor(nombre,apellido,descuento):
+    profesor=Profesor()
+    profesor.setnombreapellido(nombre,apellido)
+    profesor.setdesc(descuento)
+    personas.append(profesor)
+
+
