@@ -5,8 +5,11 @@ class Personas(object):
 
 
     def setnombreapellido(self,nombre,apellido):
-        self.nombre=nombre
-        self.apellido=apellido
+        self.nombre=str(nombre)
+        self.apellido=str(apellido)
+
+    def setdni(self,dni):
+        self.dni=dni
 
     def getdesc(self):
         return 0
