@@ -1,5 +1,5 @@
 from datetime import date
-class vuelo(object):
+class Vuelo(object):
     avion=None
     listadepasajeros=[]
     listadetripulantes=[]
@@ -38,18 +38,21 @@ class vuelo(object):
 
     def pasajeromasjoven(self):
         fecha=self.listadepasajeros[0].fechadenacimiento
+        pasajeroaux=None
         for pasajero in self.listadepasajeros:
             if fecha < pasajero.fechadenacimiento:
                 fecha=pasajero.fechadenacimiento
+                pasajeroaux=pasajero
+        return pasajeroaux
 
     def tripulacionminima(self):
-        sepuedevolar=False
+        sepuedevolar=True
         if len(self.listadetripulantes)< self.avion.cantdetripulantes:
-            sepuedevolar=True
+            sepuedevolar=False
         return sepuedevolar
 
     def tripulacionautorizada(self):
-        tripulancionautorizada=None
+        tripulancionautorizada=False
         for tripulante in self.listadetripulantes:
             for avion in tripulante.avionespermitidos:
                 if self.avion==avion:

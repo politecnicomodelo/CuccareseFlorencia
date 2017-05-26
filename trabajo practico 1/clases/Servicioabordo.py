@@ -1,5 +1,5 @@
-from .Tripulacion import tripulante
-class Servicioabordo(object):
+from .Tripulacion import Tripulante
+class Servicioabordo(object,Tripulante):
     idiomas=[]
 
     def agregaridioma(self,i):

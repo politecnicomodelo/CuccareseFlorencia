@@ -4,6 +4,8 @@ from .clases.Tripulacion import Tripulante
 from .clases.Aviones import Avion
 from .clases.Piloto import Piloto
 from .clases.Servicioabordo import Servicioabordo
+from .clases.Vuelos import Vuelo
+from datetime import datetime
 
 listadepersonas=[]
 listadeaviones=[]
@@ -45,11 +47,9 @@ def cargaraviones():
     for line in a:
         avion = Avion()
         l=line.split("|")
-        avion.codunico=l
-        l = line.split("|")
-        avion.cantdepasajeros=int(l)
-        l = line.split("|")
-        avion.cantdetripulantes=int(l)
+        avion.setcodigo(l[0])
+        avion.setcantidaddepasajeros(int(l[1]))
+        avion.setcantidaddetripulantes(int(l[2]))
         listadeaviones.append(avion)
     a.close()
 
@@ -57,34 +57,102 @@ def cargarpersonas():
     p=open("personas.dat","r")
     for line in p:
         l=line.split("|")
-        if l== "Pasajero":
+        if l[0]== "Pasajero":
             pasajero=Pasajero()
-            l = line.split("|")
-            pasajero.setnombre(l)
-            l = line.split("|")
-            pasajero.setapellido(l)
-            l = line.split("|")
-            pasajero.setfechadenacimiento(l)
-            l = line.split("|")
-            pasajero.setdni(l)
-            l = line.split("|")
-            pasajero.setvip(l)
-            l = line.split("|")
-            pasajero.setnecesidades(l)
-        if l=="Piloto":
-            piloto=Piloto()
-            l = line.split("|")
-            piloto.setnombre(l)
-            l = line.split("|")
-            piloto.setapellido(l)
-            l = line.split("|")
-            piloto.setfechadenacimiento(l)
-            l = line.split("|")
-            piloto.setdni(l)
-            l = line.split("|")
-            l=l.split(",")
-            for avion in listadeaviones:
-                if avion.codunico == l
-                    pl
+            pasajero.setnombre(l[1])
+            pasajero.setapellido(l[2])
+            pasajero.setfechadenacimiento(l[3])
+            pasajero.setdni(l[4])
+            pasajero.setvip(l[5])
+            if len(l) == 6:
+                pasajero.setnecesidades(l[6])
+            else:
+                pasajero.setnecesidades(None)
 
+        if l[0]=="Piloto":
+            piloto=Piloto()
+            piloto.setnombre(l[1])
+            piloto.setapellido(l[2])
+            piloto.setfechadenacimiento(l[3])
+            piloto.setdni(l[4])
+            aux=l[5].split(",")
+            long=len(aux)
+            while(long<0):
+                for avion in listadeaviones:
+                    if avion.codunico == aux[long]:
+                        piloto.avionespermitidos.append(avion)
+                        long=long-1
+            listadepersonas.append(piloto)
+        if l[0]=="Servicio":
+            servicio=Servicioabordo()
+            servicio.setnombre(l[1])
+            servicio.setapellido(l[2])
+            servicio.setfechadenacimiento(l[3])
+            servicio.setdni(l[4])
+            aux = l[5].split(",")
+            long = len(aux)
+            while long < 0:
+                for avion in listadeaviones:
+                    if avion.codunico == aux[long]:
+                        servicio.avionespermitidos.append(avion)
+                        long = long - 1
+
+            aux = l[6].split(",")
+            servicio.agregaridioma(aux)
+            listadepersonas.append(servicio)
+    p.close()
+
+
+
+def cargarvuelos():
+    v= open("vuelos.dat", "r")
+    for line in v:
+        l = line.split("|")
+        vuelo=Vuelo()
+        for avion in listadeaviones:
+            if avion.codunico==l[0]:
+                vuelo.setavion(avion)
+
+        date=datetime.strptime(l[1],"%d-&m-%y").date()
+        time=datetime.strptime(l[2],"%i:&M").time()
+        vuelo.setfechayhora(date,time)
+        vuelo.setorigen(l[3])
+        vuelo.setdestino(l[4])
+        aux=l[5].split(",")
+        long=len(aux)
+        while long<0:
+            for persona in listadepersonas:
+                if persona.dni == aux[long]:
+                    vuelo.agregartripulante(persona)
+                    long=long-1
+        aux = l[6].split(",")
+        long = len(aux)
+        while long < 0:
+            for persona in listadepersonas:
+                if persona.dni == aux[long]:
+                    vuelo.agregarpasajero(persona)
+                    long = long - 1
+
+    v.close()
+def listamasjovenesporvuelo():
+    listamasjoven=[]
+    for vuelo in listadevuelos:
+        aux=vuelo.pasajeromasjoven()
+        listamasjoven.append(aux)
+    return listamasjoven
+
+def tripulacionmin():
+    lista=[]
+    for vuelo in listadevuelos:
+        aux=vuelo.tripulacionminima()
+        if aux==False:
+            lista.append(vuelo)
+    return lista
+def vuelosnoauto():
+    lista=[]
+    for vuelo in listadevuelos:
+        aux=vuelo.tripulacionautorizada()
+        if aux==False:
+            lista.append(vuelo)
+    return lista
 
