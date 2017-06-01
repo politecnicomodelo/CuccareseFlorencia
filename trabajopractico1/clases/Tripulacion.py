@@ -1,5 +1,5 @@
 from .Personas import Personas
-class Tripulante (object,Personas):
+class Tripulante (Personas):
     avionespermitidos=[]
 
     def agregarmodelodeavion(self,a):

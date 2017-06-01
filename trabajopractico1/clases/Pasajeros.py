@@ -1,5 +1,5 @@
 from .Personas import Personas
-class Pasajero(object,Personas):
+class Pasajero(Personas):
     vip=None
     necesidadesespeciales=None
 

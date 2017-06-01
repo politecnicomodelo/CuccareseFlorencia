@@ -1,10 +1,9 @@
-from .clases.Personas import Personas
-from .clases.Pasajeros import Pasajero
-from .clases.Tripulacion import Tripulante
-from .clases.Aviones import Avion
-from .clases.Piloto import Piloto
-from .clases.Servicioabordo import Servicioabordo
-from .clases.Vuelos import Vuelo
+from clases.Pasajeros import Pasajero
+from clases.Tripulacion import Tripulante
+from clases.Aviones import Avion
+from clases.Piloto import Piloto
+from clases.Servicioabordo import Servicioabordo
+from clases.Vuelos import Vuelo
 from datetime import datetime
 
 listadepersonas=[]
@@ -43,7 +42,7 @@ def listavuelamasdeunavez():
 
 
 def cargaraviones():
-    a=open("aviones.dat","r")
+    a=open("/home/alumno/Descargas/aviones.dat","r")
     for line in a:
         avion = Avion()
         l=line.split("|")
@@ -54,9 +53,10 @@ def cargaraviones():
     a.close()
 
 def cargarpersonas():
-    p=open("personas.dat","r")
+    p=open("/home/alumno/Descargas/personas.dat","r")
     for line in p:
         l=line.split("|")
+
         if l[0]== "Pasajero":
             pasajero=Pasajero()
             pasajero.setnombre(l[1])
@@ -68,6 +68,7 @@ def cargarpersonas():
                 pasajero.setnecesidades(l[6])
             else:
                 pasajero.setnecesidades(None)
+            listadepersonas.append(pasajero)
 
         if l[0]=="Piloto":
             piloto=Piloto()
@@ -76,12 +77,10 @@ def cargarpersonas():
             piloto.setfechadenacimiento(l[3])
             piloto.setdni(l[4])
             aux=l[5].split(",")
-            long=len(aux)
-            while(long<0):
+            for item in aux:
                 for avion in listadeaviones:
-                    if avion.codunico == aux[long]:
-                        piloto.avionespermitidos.append(avion)
-                        long=long-1
+                    if avion.codunico==item:
+                        piloto.agregarmodelodeavion(avion)
             listadepersonas.append(piloto)
         if l[0]=="Servicio":
             servicio=Servicioabordo()
@@ -94,7 +93,7 @@ def cargarpersonas():
             while long < 0:
                 for avion in listadeaviones:
                     if avion.codunico == aux[long]:
-                        servicio.avionespermitidos.append(avion)
+                        servicio.agregarmodelodeavion(avion)
                         long = long - 1
 
             aux = l[6].split(",")
@@ -105,7 +104,7 @@ def cargarpersonas():
 
 
 def cargarvuelos():
-    v= open("vuelos.dat", "r")
+    v= open("/home/alumno/Descargas/vuelos.dat", "r")
     for line in v:
         l = line.split("|")
         vuelo=Vuelo()
@@ -156,3 +155,16 @@ def vuelosnoauto():
             lista.append(vuelo)
     return lista
 
+def imprimirpersona(listap):
+    for persona in listap:
+        print(persona.dni)
+        print(persona.dni)
+def menu():
+    cargaraviones()
+    cargarpersonas()
+    for per in listadepersonas:
+        if type(per) is Piloto:
+            print(per.nombre)
+            print(per.avionespermitidos[0].codunico)
+
+menu()
