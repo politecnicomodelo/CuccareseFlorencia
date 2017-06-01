@@ -89,12 +89,10 @@ def cargarpersonas():
             servicio.setfechadenacimiento(l[3])
             servicio.setdni(l[4])
             aux = l[5].split(",")
-            long = len(aux)
-            while long < 0:
+            for item in aux:
                 for avion in listadeaviones:
-                    if avion.codunico == aux[long]:
+                    if avion.codunico == item:
                         servicio.agregarmodelodeavion(avion)
-                        long = long - 1
 
             aux = l[6].split(",")
             servicio.agregaridioma(aux)
@@ -118,19 +116,16 @@ def cargarvuelos():
         vuelo.setorigen(l[3])
         vuelo.setdestino(l[4])
         aux=l[5].split(",")
-        long=len(aux)
-        while long<0:
+        for item in aux:
             for persona in listadepersonas:
-                if persona.dni == aux[long]:
+                if persona.dni == item:
                     vuelo.agregartripulante(persona)
-                    long=long-1
         aux = l[6].split(",")
-        long = len(aux)
-        while long < 0:
+        for item in aux:
             for persona in listadepersonas:
-                if persona.dni == aux[long]:
+                if persona.dni == item:
                     vuelo.agregarpasajero(persona)
-                    long = long - 1
+        listadevuelos.append(vuelo)
 
     v.close()
 def listamasjovenesporvuelo():
